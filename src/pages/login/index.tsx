@@ -30,7 +30,6 @@ const Login = () => {
   const handleLoginSubmit = () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-    console.log(email, password);
     if (email && password) {
       mutation.mutate({ email, password });
     }
@@ -43,6 +42,12 @@ const Login = () => {
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
             Enter your email below to login to your account.
+            <br />
+            {mutation.isError && (
+              <span className="text-sm text-red-500">
+                {"Something went wrong"}
+              </span>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
