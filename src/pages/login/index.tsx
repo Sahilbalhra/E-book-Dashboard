@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginApi } from "@/api/apiCore";
+import { LoaderCircle } from "lucide-react";
 
 const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -67,8 +68,15 @@ const Login = () => {
               <Input id="password" type="password" ref={passwordRef} required />
             </div>
             <div className="grid gap-2">
-              <Button type="submit" className="w-full">
-                Create an account
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending && (
+                  <LoaderCircle className="animate-spin" />
+                )}
+                &nbsp;&nbsp;&nbsp; Sign In
               </Button>
             </div>
           </form>
