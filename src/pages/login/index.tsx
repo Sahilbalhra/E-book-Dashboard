@@ -13,16 +13,21 @@ import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginApi } from "@/api/apiCore";
 import { LoaderCircle } from "lucide-react";
+import { useLoggedInUserStore } from "@/store/store";
 
 const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
+  const setLoggedInUserData = useLoggedInUserStore(
+    (state) => state.setLoggedInData
+  );
 
   const mutation = useMutation({
     mutationFn: loginApi,
-    onSuccess: () => {
+    onSuccess: (response) => {
+      setLoggedInUserData(response.data.data);
       navigate("/dashboard/home");
     },
   });
@@ -57,6 +62,7 @@ const Login = () => {
               handleLoginSubmit();
             }}
             className="grid gap-4"
+            autoComplete="off"
           >
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
@@ -65,12 +71,19 @@ const Login = () => {
                 type="email"
                 ref={emailRef}
                 placeholder="m@example.com"
+                autoComplete="off"
                 required
               />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" ref={passwordRef} required />
+              <Input
+                id="password"
+                type="password"
+                ref={passwordRef}
+                autoComplete="off"
+                required
+              />
             </div>
             <div className="grid gap-2">
               <Button
