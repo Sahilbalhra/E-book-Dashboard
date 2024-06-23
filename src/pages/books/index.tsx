@@ -49,8 +49,8 @@ const Books = () => {
   console.log("isLoading", isLoading);
   console.log("isError", isError);
   return (
-    <>
-      <div className="flex justify-between items-center">
+    <div>
+      <div className="flex items-center justify-between">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -62,10 +62,11 @@ const Books = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+
         <Button
           onClick={(e) => {
             e.preventDefault();
-            navigate("create");
+            navigate("/dashboard/books/create");
           }}
         >
           <CirclePlus size={20} />
@@ -73,11 +74,11 @@ const Books = () => {
         </Button>
       </div>
 
-      <Card x-chunk="dashboard-06-chunk-0">
+      <Card className="mt-6">
         <CardHeader>
           <CardTitle>Books</CardTitle>
           <CardDescription>
-            Manage your Books and view their sales performance.
+            Manage your books and view their sales performance.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -90,7 +91,7 @@ const Books = () => {
                 <TableHead>Title</TableHead>
                 <TableHead>Genre</TableHead>
                 <TableHead className="hidden md:table-cell">
-                  Author Name
+                  Author name
                 </TableHead>
                 <TableHead className="hidden md:table-cell">
                   Created at
@@ -101,12 +102,12 @@ const Books = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Array.isArray(data?.data?.data) &&
-                data?.data?.data.map((book: Book) => (
+              {data?.data?.data.map((book: Book) => {
+                return (
                   <TableRow key={book._id}>
                     <TableCell className="hidden sm:table-cell">
                       <img
-                        alt="Product image"
+                        alt={book.title}
                         className="aspect-square rounded-md object-cover"
                         height="64"
                         src={book.cover_image}
@@ -120,7 +121,6 @@ const Books = () => {
                     <TableCell className="hidden md:table-cell">
                       {book.author.name}
                     </TableCell>
-
                     <TableCell className="hidden md:table-cell">
                       {book.createdAt}
                     </TableCell>
@@ -144,7 +144,8 @@ const Books = () => {
                       </DropdownMenu>
                     </TableCell>
                   </TableRow>
-                ))}
+                );
+              })}
             </TableBody>
           </Table>
         </CardContent>
@@ -154,7 +155,7 @@ const Books = () => {
           </div>
         </CardFooter>
       </Card>
-    </>
+    </div>
   );
 };
 

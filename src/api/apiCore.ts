@@ -1,3 +1,4 @@
+import { useLoggedInUserStore } from "@/store/store";
 import axios from "axios";
 
 const api = axios.create({
@@ -5,6 +6,14 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+});
+
+api.interceptors.request.use((config) => {
+  const token = useLoggedInUserStore.getState().loggedInData?.accessToken;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export const loginApi = async (data: { email: string; password: string }) => {
@@ -22,3 +31,10 @@ export const signupApi = async (data: {
 export const getBooksApi = async () => {
   return api.get("/api/books");
 };
+
+export const createBookApi = async (data: FormData) =>
+  api.post("/api/books/create", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
