@@ -34,10 +34,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { CirclePlus, MoreHorizontal } from "lucide-react";
 import { Book } from "@/types";
+import { useNavigate } from "react-router-dom";
 
 const Books = () => {
+  const navigate = useNavigate();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["books"],
     queryFn: getBooksApi,
@@ -48,18 +50,30 @@ const Books = () => {
   console.log("isError", isError);
   return (
     <>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/dashboard/home">Home</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Books</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <Card x-chunk="dashboard-06-chunk-0" className="mt-3">
+      <div className="flex justify-between items-center">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/dashboard/home">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Books</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("create");
+          }}
+        >
+          <CirclePlus size={20} />
+          <span className="ml-2">Add book</span>
+        </Button>
+      </div>
+
+      <Card x-chunk="dashboard-06-chunk-0">
         <CardHeader>
           <CardTitle>Books</CardTitle>
           <CardDescription>
