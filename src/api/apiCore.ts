@@ -38,3 +38,19 @@ export const createBookApi = async (data: FormData) =>
       "Content-Type": "multipart/form-data",
     },
   });
+export const updateBookApi = async (data: FormData) =>
+  api.patch("/api/books/update", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+export const getBookByIdApi = async (data: string) => {
+  if (!data) {
+    throw new Error("ID is required");
+  }
+  return api.get(`/api/books/${data}`);
+};
+
+export const deleteBookApi = async (data: string) =>
+  api.delete(`/api/books/${data}`);

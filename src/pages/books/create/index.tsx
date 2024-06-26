@@ -27,10 +27,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
-import { createBookApi } from "@/api/apiCore";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createBookApi, getBookByIdApi, updateBookApi } from "@/api/apiCore";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -52,6 +53,14 @@ const formSchema = z.object({
 
 const CreateBook = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
+
+  const { data } = useQuery({
+    queryKey: ["book"],
+    queryFn: async () => await getBookByIdApi(state?.id),
+    staleTime: 10000,
+    enabled: !!state?.id,
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,7 +80,16 @@ const CreateBook = () => {
     mutationFn: createBookApi,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["books"] });
-      console.log("Book created successfully");
+
+      navigate("/dashboard/books");
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: updateBookApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+
       navigate("/dashboard/books");
     },
   });
@@ -85,11 +103,23 @@ const CreateBook = () => {
     formdata.append("description", values.description);
     formdata.append("cover_image", values.cover_image[0]);
     formdata.append("file", values.file[0]);
-
-    mutation.mutate(formdata);
-
-    console.log(values);
+    if (state?.id) {
+      formdata.append("_id", state?.id);
+      updateMutation.mutate(formdata);
+    } else {
+      mutation.mutate(formdata);
+    }
   }
+
+  useEffect(() => {
+    if (data?.data?.data) {
+      form.reset({
+        title: data?.data?.data?.title,
+        genre: data?.data?.data?.genre,
+        description: data?.data?.data?.description,
+      });
+    }
+  }, [data?.data?.data]);
 
   return (
     <section>
@@ -107,7 +137,9 @@ const CreateBook = () => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Create</BreadcrumbPage>
+                  <BreadcrumbPage>
+                    {state?.id ? "Update" : "Create"}
+                  </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -118,18 +150,22 @@ const CreateBook = () => {
                 </Button>
               </Link>
               <Button type="submit" disabled={mutation.isPending}>
-                {mutation.isPending && (
+                {(mutation.isPending || updateMutation.isPending) && (
                   <LoaderCircle className="animate-spin" />
                 )}
-                <span className="ml-2">Submit</span>
+                <span className="ml-2">{state?.id ? "Update" : "Create"}</span>
               </Button>
             </div>
           </div>
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Create a new book</CardTitle>
+              <CardTitle>
+                {" "}
+                {state?.id ? "Update" : "Create a new "} Create a new book
+              </CardTitle>
               <CardDescription>
-                Fill out the form below to create a new book.
+                Fill out the form below to{" "}
+                {state?.id ? "update" : "create a new "} book.
               </CardDescription>
             </CardHeader>
             <CardContent>
