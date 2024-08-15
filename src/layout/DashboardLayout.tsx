@@ -11,13 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useLoggedInUserStore } from "@/store/store";
 import { Navigate, Outlet, NavLink } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  CircleUser,
-  Home,
-  Menu,
-  ShoppingCart,
-  MessageSquareMore,
-} from "lucide-react";
+import { CircleUser, Book, Home, Menu, MessageSquareMore } from "lucide-react";
 
 const DashboardLayout = () => {
   const { loggedInData, setLoggedInData } = useLoggedInUserStore(
@@ -55,7 +49,7 @@ const DashboardLayout = () => {
                   `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${isActive ? "bg-gray-100 text-primary" : ""}`
                 }
               >
-                <ShoppingCart className="h-4 w-4" />
+                <Book className="h-4 w-4" />
                 Books
               </NavLink>
               <NavLink
@@ -108,7 +102,7 @@ const DashboardLayout = () => {
                     `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${isActive ? "bg-gray-100 text-primary" : ""}`
                   }
                 >
-                  <ShoppingCart className="h-4 w-4" />
+                  <Book className="h-4 w-4" />
                   Books
                 </NavLink>{" "}
                 <NavLink
