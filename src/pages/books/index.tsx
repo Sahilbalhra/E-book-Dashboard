@@ -19,7 +19,6 @@ import {
 import {
   Table,
   TableBody,
-  // TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -67,7 +66,7 @@ const Books = () => {
   }
 
   return (
-    <div>
+    <>
       <div className="flex items-center justify-between">
         <Breadcrumb>
           <BreadcrumbList>
@@ -199,7 +198,7 @@ const Books = () => {
           </CardFooter>
         </Card>
       )}
-    </div>
+    </>
   );
 };
 
