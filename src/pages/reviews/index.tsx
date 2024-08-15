@@ -146,7 +146,7 @@ const Reviews = () => {
             <h1 className="text-xl font-semibold">Loading...</h1>
           </div>
         </div>
-      ) : (
+      ) : Array.isArray(reviewsApiData?.data?.data?.reviews) ? (
         <Card className="mt-6 overflow-auto">
           <CardHeader>
             <CardTitle>Reviews</CardTitle>
@@ -164,82 +164,81 @@ const Reviews = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Array.isArray(reviewsApiData?.data?.data?.reviews) &&
-                  reviewsApiData?.data?.data?.reviews.map((review: Review) => {
-                    return (
-                      <TableRow key={review._id}>
-                        <TableCell>
-                          <div className="flex items-center gap-4">
-                            <Avatar className="hidden h-9 w-9 sm:flex">
-                              <AvatarFallback>
-                                {String(review.user_id.name).slice(0, 2)}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="grid gap-1">
-                              <p className="text-sm font-medium leading-none">
-                                {review.user_id.name}
-                              </p>
-                              <p className="text-sm text-muted-foreground">
-                                {review.user_id.email || ""}
-                              </p>
-                            </div>
+                {reviewsApiData?.data?.data?.reviews.map((review: Review) => {
+                  return (
+                    <TableRow key={review._id}>
+                      <TableCell>
+                        <div className="flex items-center gap-4">
+                          <Avatar className="hidden h-9 w-9 sm:flex">
+                            <AvatarFallback>
+                              {String(review.user_id.name).slice(0, 2)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="grid gap-1">
+                            <p className="text-sm font-medium leading-none">
+                              {review.user_id.name}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {review.user_id.email || ""}
+                            </p>
                           </div>
-                        </TableCell>
-                        <TableCell className="font-medium hidden md:table-cell">
-                          {review.title}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{review.rating}</Badge>
-                        </TableCell>
-                        <TableCell>{review.comment}</TableCell>
-                        <TableCell>
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className="text-red-400 border-red-500 hover:text-red-500 hover:border-red-600 hover:bg-red-50"
-                              >
-                                {" "}
-                                Delete
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-md">
-                              <DeleteConfirmationModal />
-                              <DialogFooter className="justify-between">
-                                <DialogClose asChild>
-                                  <Button
-                                    type="button"
-                                    variant="secondary"
-                                    className="my-2"
-                                  >
-                                    Close
-                                  </Button>
-                                </DialogClose>
-                                <DialogClose asChild>
-                                  <Button
-                                    type="button"
-                                    variant={"default"}
-                                    className="my-2"
-                                    disabled={mutation.isPending}
-                                    onClick={() => {
-                                      mutation.mutate(review._id);
-                                    }}
-                                  >
-                                    Yes Sure !
-                                  </Button>
-                                </DialogClose>
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium hidden md:table-cell">
+                        {review.title}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{review.rating}</Badge>
+                      </TableCell>
+                      <TableCell>{review.comment}</TableCell>
+                      <TableCell>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="text-red-400 border-red-500 hover:text-red-500 hover:border-red-600 hover:bg-red-50"
+                            >
+                              {" "}
+                              Delete
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-md">
+                            <DeleteConfirmationModal />
+                            <DialogFooter className="justify-between">
+                              <DialogClose asChild>
+                                <Button
+                                  type="button"
+                                  variant="secondary"
+                                  className="my-2"
+                                >
+                                  Close
+                                </Button>
+                              </DialogClose>
+                              <DialogClose asChild>
+                                <Button
+                                  type="button"
+                                  variant={"default"}
+                                  className="my-2"
+                                  disabled={mutation.isPending}
+                                  onClick={() => {
+                                    mutation.mutate(review._id);
+                                  }}
+                                >
+                                  Yes Sure !
+                                </Button>
+                              </DialogClose>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </CardContent>
         </Card>
-      )}
+      ) : null}
     </>
   );
 };
