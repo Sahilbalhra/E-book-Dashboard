@@ -1,5 +1,5 @@
-import { deleteBookApi, getBooksApi } from "@/api/apiCore";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Book } from "@/types";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,7 +12,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -32,10 +31,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CirclePlus, MoreHorizontal } from "lucide-react";
-import { Book } from "@/types";
-import { useNavigate } from "react-router-dom";
+import { deleteBookApi, getBooksApi } from "@/api/apiCore";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const Books = () => {
   const navigate = useNavigate();
@@ -191,11 +191,6 @@ const Books = () => {
               </TableBody>
             </Table>
           </CardContent>
-          <CardFooter>
-            <div className="text-xs text-muted-foreground">
-              Showing <strong>1-10</strong> of <strong>32</strong> products
-            </div>
-          </CardFooter>
         </Card>
       )}
     </>
