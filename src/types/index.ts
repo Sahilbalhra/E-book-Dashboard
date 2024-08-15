@@ -3,6 +3,12 @@ export interface User {
   name: string;
   email?: string;
 }
+export interface TopUser {
+  user_id: string;
+  name: string;
+  email: string;
+  reviewCount: number;
+}
 
 export interface Book {
   _id: string;

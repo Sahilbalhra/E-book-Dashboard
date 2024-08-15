@@ -58,6 +58,7 @@ export const getReviewsByBookIdApi = async (bookId: string | null) => {
   }
   return api.get(`/api/review/${bookId}`);
 };
+
 export const deleteReviewApi = async (reviewId: string) => {
   if (!reviewId) {
     throw new Error("Review ID is required");
@@ -67,3 +68,7 @@ export const deleteReviewApi = async (reviewId: string) => {
 
 export const deleteBookApi = async (data: string) =>
   api.delete(`/api/books/${data}`);
+
+export const getDashboardData = async () => {
+  return api.get("/api/dashboard");
+};
