@@ -143,13 +143,15 @@ const Books = () => {
                         {book.title}
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline">{book.genre}</Badge>
+                        <Badge variant="outline" className="text-nowrap">
+                          {book.genre}
+                        </Badge>
                       </TableCell>
                       <TableCell className="hidden md:table-cell">
                         {book.author.name}
                       </TableCell>
                       <TableCell className="hidden md:table-cell">
-                        {book.createdAt}
+                        {new Date(book.createdAt).toUTCString()}
                       </TableCell>
                       <TableCell>
                         <DropdownMenu>
